@@ -1,11 +1,11 @@
 # MapLibre demo architecture: agent to application, end to end
 
-The Worldview demo works because Worldview's state is a permalink: the GeoUI tools compute a URL and
+The MIO Worldview demo works because its state is a permalink: the GeoUI tools compute a URL and
 the agent navigates to it. Most visualisation apps have no such URL. The MapLibre demo shows the
 protocol working without one: a React app owns its state, the **`@geoui/react-adapter` SDK** attaches that
 state (read and write) to the protocol, and the **GeoUI MCP in `demo/maplibre/`** (Python package `maplibre`) reaches the running page
 over Chrome DevTools Protocol (CDP) to list extensions, read state and render intents. The agent keeps
-the same three tools it has for Worldview, so `geouibench` scores it the same way.
+the same three tools it has for MIO Worldview, so `geouibench` scores it the same way.
 
 Pieces: [`sdk/geoui-react-adapter`](../../sdk/geoui-react-adapter) · [`demo/maplibre`](../../demo/maplibre) (the `maplibre`
 package, with the app under `maplibre_geo_application/`) · [`benchmarks/maplibre`](../../benchmarks/maplibre) ·
@@ -135,7 +135,7 @@ and `geouibench`'s tab reset between conversations is followed by an automatic r
 
 ## Where the state lives, and how the benchmark reads it
 
-| | Worldview | MapLibre |
+| | MIO Worldview | MapLibre |
 |---|---|---|
 | source of truth | the permalink URL | the app's React state |
 | agent → app | render tool returns a URL; the agent navigates to it | render tool writes the state over CDP; nothing to navigate |

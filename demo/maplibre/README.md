@@ -3,7 +3,7 @@
 The second demo of this repository, built like `demo/worldview`: the Python package in this
 directory (`maplibre`, part of the `geoui-demos` workspace member) holds the agent, the tools and
 the MCP server, and the application it drives sits beside it under `maplibre_geo_application/`.
-Unlike NASA Worldview, nothing here is in the URL.
+Unlike NASA MIO Worldview, nothing here is in the URL.
 
 - `maplibre_geo_application/`: a plain React + TypeScript map (react-map-gl on MapLibre, NASA GIBS
   raster tiles) whose state is attached to the GeoUI Intent Protocol with the

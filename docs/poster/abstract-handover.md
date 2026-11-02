@@ -7,7 +7,7 @@
 > deliberately short and abstract-shaped.
 >
 > Source code: `ieso_w_geoui/` — protocol (`spec.md`, `core.py`),
-> Worldview adapter (`adapter.py`), MCP tools (`tools.py`), agent
+> MIO Worldview adapter (`adapter.py`), MCP tools (`tools.py`), agent
 > (`agent.py`).
 
 ---
@@ -16,18 +16,18 @@
 
 The old abstract is probably framed as:
 
-> *"We built an IESO agent that drives NASA Worldview through its
+> *"We built an IESO agent that drives NASA MIO Worldview through its
 > permalink URL grammar."*
 
 The reworked abstract should be framed as:
 
 > *"We introduce the **GeoUI Intent Protocol**, an
 > application-agnostic declarative schema for agent-driven
-> geospatial visualization. NASA Worldview is the reference
+> geospatial visualization. NASA MIO Worldview is the reference
 > adapter that demonstrates the protocol; the IESO agent is the
 > validation vehicle."*
 
-The **protocol is the contribution**. The IESO Worldview agent is
+The **protocol is the contribution**. The IESO MIO Worldview agent is
 the *evidence* the protocol works. That flip is the whole rework.
 
 ---
@@ -49,7 +49,7 @@ exists). We introduce the **GeoUI Intent Protocol**: a tiny
 declarative core (`viewport`, `time`, `layers`) plus
 URI-identified extensions (compare / chart / raster-styling),
 STAC-inspired, exposed to agents as exactly two MCP tools —
-`render_intent` and `get_state`. On iterative NASA Worldview
+`render_intent` and `get_state`. On iterative NASA MIO Worldview
 workflows (n=4), an agent that speaks GeoIntent costs **~14×
 fewer raw tokens, ~10× fewer tool calls, and ~5× fewer LLM
 round-trips per work turn** than the same agent driving the same
@@ -80,12 +80,12 @@ map state is not recoverable from pixels.
   versioning. Validators compose core + declared extensions
   (`allOf`).
 - **Thin adapter pattern**: the app is unmodified. The adapter
-  translates `GeoIntent ↔ app native state` (e.g. for Worldview,
+  translates `GeoIntent ↔ app native state` (e.g. for MIO Worldview,
   permalink URL). Two MCP tools at the boundary.
 
 ### Method (≈ 2 sentences)
 
-- **Reference adapter** wraps NASA Worldview via its existing
+- **Reference adapter** wraps NASA MIO Worldview via its existing
   `WorldviewPermalinkInputSchema`. `intent_to_url` + `url_to_intent`
   round-trip cleanly on the supported field subset.
 - **Same agent skeleton, same prompts, two interaction
@@ -96,7 +96,7 @@ map state is not recoverable from pixels.
 
 ### Results (≈ 2 sentences with numbers)
 
-Averaged over 4 iterative Worldview workflows
+Averaged over 4 iterative MIO Worldview workflows
 (single-layer render, date refinement, spatial pan, A/B compare):
 
 - **Total tokens per work turn:** 50,672 (GeoUI) vs **693,234**
@@ -106,8 +106,8 @@ Averaged over 4 iterative Worldview workflows
 - **Wall clock per work turn:** **7–16× longer** for VLM.
 - Plus a qualitative accuracy result: on "what region am I
   viewing?" after a manual pan, `get_state()` answers from the
-  Worldview URL the user landed on; the VLM-baseline cannot
-  recover that semantic state from screenshots because Worldview
+  MIO Worldview URL the user landed on; the VLM-baseline cannot
+  recover that semantic state from screenshots because MIO Worldview
   renders through canvas + WebGL.
 
 ### Significance (≈ 2 sentences)
@@ -142,7 +142,7 @@ abstract should land on:
 - "Two MCP tools at the adapter boundary"
 - "Round-trip property: `intent → native → intent` is the
   identity"
-- "Worldview as a reference adapter, not a special case"
+- "MIO Worldview as a reference adapter, not a special case"
 - "Token-efficient, portable, and bounded by declared extensions"
 
 ## Phrases / framings to retire from the IESO version
@@ -150,12 +150,12 @@ abstract should land on:
 These signal "IESO-agent paper" when you want "GeoUI-protocol
 paper":
 
-- ~~"We built an IESO agent for Worldview"~~ → "We built a
-  protocol; Worldview is the first reference adapter."
-- ~~"The agent emits Worldview permalink URLs"~~ → "The agent
-  emits `GeoIntent`; the adapter emits Worldview permalinks."
-- ~~"Iterative Worldview analysis assistant"~~ → "Iterative
-  agent-driven geospatial analysis, demonstrated on Worldview."
+- ~~"We built an IESO agent for MIO Worldview"~~ → "We built a
+  protocol; MIO Worldview is the first reference adapter."
+- ~~"The agent emits MIO Worldview permalink URLs"~~ → "The agent
+  emits `GeoIntent`; the adapter emits MIO Worldview permalinks."
+- ~~"Iterative MIO Worldview analysis assistant"~~ → "Iterative
+  agent-driven geospatial analysis, demonstrated on MIO Worldview."
 - ~~Numbers framed as "agent X tokens"~~ → "interaction
   mechanism X tokens" (the protocol vs the VLM baseline; the
   agent itself is held constant in our benchmark).
@@ -168,7 +168,7 @@ paper":
   tiny-core + extensions idiom. GeoUI is the same shape applied
   one layer up the stack — agent ↔ visualization instead of
   client ↔ catalog.
-- **Worldview is open** (NASA GIBS) — the reference
+- **MIO Worldview is open** (NASA GIBS) — the reference
   implementation runs against a public, FOSS-compatible
   visualization stack.
 - **Adapter cost amortizes across the ecosystem.** One adapter
@@ -202,7 +202,7 @@ text in real artifacts)
 | `spec.md` | Canonical v1.0.0 protocol spec — core + extension mechanics + versioning |
 | `core.py` | `GeoIntent`, `Viewport`, `TimeWindow`, `LayerRef` Pydantic models |
 | `extensions/{compare,chart,raster_styling}.py` | Three reference extensions (Pydantic + validators) |
-| `adapter.py` | `intent_to_url` / `url_to_intent` — Worldview adapter |
+| `adapter.py` | `intent_to_url` / `url_to_intent` — MIO Worldview adapter |
 | `url_parser.py` | Inverse of `WorldviewPermalinkTool.build_url`; closes the round-trip |
 | `tools.py` | `GeoUIRenderIntentTool` / `GeoUIGetStateTool` (AKD `BaseTool` subclasses) |
 | `agent.py` | `IESOWorldviewGeoUIAgent` — the validation-vehicle agent + Playwright MCP wiring |
@@ -229,7 +229,7 @@ sibling `benchmarks/` directory at the worktree root.
 > exactly two MCP tools (`render_intent` and `get_state`). A thin
 > adapter translates GeoIntent to and from the application's
 > native state; the application itself is unmodified. On
-> iterative NASA Worldview workflows, an agent that speaks
+> iterative NASA MIO Worldview workflows, an agent that speaks
 > GeoIntent costs ~14× fewer raw tokens, ~10× fewer tool calls,
 > and ~5× fewer LLM round-trips per work turn than the same agent
 > driving the same UI via screenshots and accessibility-tree
@@ -239,10 +239,10 @@ sibling `benchmarks/` directory at the worktree root.
 ### Standalone 300-word paragraph
 
 > *Add: 1 sentence on motivation; 1 sentence on the iterative
-> Worldview workflow shape; 1 sentence on the discovery-held-equal
+> MIO Worldview workflow shape; 1 sentence on the discovery-held-equal
 > benchmark setup; 1 sentence on extensions in practice (compare
 > + chart + raster-styling); 1 sentence on portability beyond
-> Worldview. Use the section-by-section feed above as
+> MIO Worldview. Use the section-by-section feed above as
 > ingredients.*
 
 ---

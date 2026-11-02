@@ -6,7 +6,7 @@
 > file to change what the automated runs do.
 
 A small, hand-curated set of conversation scripts covering the
-distinct *kinds* of interaction a Worldview user would actually do.
+distinct *kinds* of interaction a MIO Worldview user would actually do.
 Each script is a sequence of user turns; run the same script on
 both agents (with their logs reset between agents) and compare the
 JSONL rows written to `benchmarks/runs.jsonl`.
@@ -28,11 +28,11 @@ Two ingredients make a prompt fully-specified:
 
 1. **Per-agent layer naming**, matching what each agent
    downstream consumes:
-   - **GeoUI agent** → exact Worldview registry layer ID, e.g.
+   - **GeoUI agent** → exact MIO Worldview registry layer ID, e.g.
      ``MODIS_Aqua_Aerosol_Optical_Depth_3km``. Distinguishable by
      underscores + exact capitalisation.
    - **VLM agent** → verbose searchable layer name as it appears
-     in Worldview's "Add Layers" search bar, e.g.
+     in MIO Worldview's "Add Layers" search bar, e.g.
      `"MODIS Aqua Aerosol Optical Depth"`. Human-readable.
 2. **An explicit signal** that you've already done discovery
    off-band — phrasings like "I've already identified this exact
@@ -43,7 +43,7 @@ Two ingredients make a prompt fully-specified:
 Date is the same on both agents (`YYYY-MM-DD`). Location is a
 readable **place name** (e.g. "Gulf of Mexico", "Florida",
 "contiguous US"); each agent translates the name appropriately —
-GeoUI infers a bbox for `viewport.bbox`, VLM drives Worldview's
+GeoUI infers a bbox for `viewport.bbox`, VLM drives MIO Worldview's
 location-search UI.
 
 That asymmetry is intentional: it lets each agent receive the
@@ -91,7 +91,7 @@ the same kind of difference.
 
 ## 1. Single-shot initial render (baseline)
 
-The simplest workflow: open Worldview, enable one layer, set the
+The simplest workflow: open MIO Worldview, enable one layer, set the
 date. One turn, no refinement.
 
 **GeoUI:**
@@ -136,7 +136,7 @@ Now move the date forward by one day, to 2024-09-27.
 ## 3. Refining — pan to a place by name
 
 A *visual* operation that doesn't map cleanly to a single map
-control. GeoUI updates `viewport.bbox`; VLM must use Worldview's
+control. GeoUI updates `viewport.bbox`; VLM must use MIO Worldview's
 search or drag the map. *Spatial* axis of refinement.
 
 **GeoUI turn 1:**

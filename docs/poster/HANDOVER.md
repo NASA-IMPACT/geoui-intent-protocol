@@ -10,7 +10,7 @@
 The **GeoUI Intent Protocol** lets an LLM agent drive a
 geospatial visualization through a **typed declarative
 intent** — viewport, time, layers — instead of through
-screenshots + DOM + clicks. On iterative NASA Worldview
+screenshots + DOM + clicks. On iterative NASA MIO Worldview
 workflows (n = 4), the protocol path is **~15× cheaper per
 task** than a VLM + browser-control baseline, and **answers
 correctly** on questions where the baseline cannot (geo
@@ -36,7 +36,7 @@ in October 2026; this document is kept as the poster-era narrative.
 | Protocol spec (canonical) | `docs/spec.md` |
 | `GeoIntent` core schema | `geoui/core.py` |
 | Extensions (compare / chart / raster-styling) | `geoui/extensions/{compare,chart,raster_styling}.py` |
-| Reference adapter (Worldview) | `geoui/adapters/worldview/` |
+| Reference adapter (MIO Worldview) | `geoui/adapters/worldview/` |
 | Tool surface (`render_intent`, `get_state`) | `geoui/tools.py` |
 | MCP server | `geoui/mcp/server.py` (`geoui-mcp`) |
 | Agent — GeoUI variant | `geoui/agents/geoui_agent.py` |
@@ -87,8 +87,8 @@ adapter. Field names are namespaced (`compare:mode`,
 
 **Adapter responsibility:** translate `GeoIntent` ↔ the
 application's native state. **The geo-visualization application
-itself is not modified.** Worldview, for instance, is wrapped
-by mapping `GeoIntent` to Worldview's existing
+itself is not modified.** MIO Worldview, for instance, is wrapped
+by mapping `GeoIntent` to MIO Worldview's existing
 `WorldviewPermalinkInputSchema` and back.
 
 > For the canonical, versioned spec, see `docs/spec.md`.
@@ -97,7 +97,7 @@ by mapping `GeoIntent` to Worldview's existing
 
 ## Forking a new adapter
 
-The recipe below mirrors the Worldview reference implementation.
+The recipe below mirrors the MIO Worldview reference implementation.
 A reader with `geoui/adapters/worldview/adapter.py` and
 `geoui/tools.py` open can follow it end-to-end.
 
@@ -105,7 +105,7 @@ A reader with `geoui/adapters/worldview/adapter.py` and
    representation of its current state you can both **write**
    (to drive the view) and **read** (to recover state after
    user interaction). Examples:
-   - Worldview → permalink URL
+   - MIO Worldview → permalink URL
    - Cesium → a `Viewer` config object via the JS bridge
    - QGIS → project XML or PyQGIS API
    - Leaflet / Mapbox → JS map state queried via Playwright
@@ -141,7 +141,7 @@ A reader with `geoui/adapters/worldview/adapter.py` and
    `[YourRenderIntentTool, YourGetStateTool,
    …shared discovery tools]`. The GeoUI agent system prompt is
    app-agnostic at the protocol layer — **reuse it verbatim**
-   where you can, and only patch the parts that name Worldview
+   where you can, and only patch the parts that name MIO Worldview
    specifically.
 
 6. **Add extensions only when you need them.** Each extension
@@ -206,7 +206,7 @@ Each side gets the input it can consume directly.
 
 Single-layer render · date refinement · spatial pan · A/B
 compare · time-series chart · multi-layer overlay. These are
-the axes the Worldview suite covers, and they generalize.
+the axes the MIO Worldview suite covers, and they generalize.
 
 ### Run
 

@@ -49,7 +49,7 @@ application slots into the bottom half by providing its own adapter.
   - `get_state()` — return the application's current state as a `GeoIntent`.
 - **Adapter band:** translates between portable `GeoIntent` and the
   application's native state representation. Pure functions, no I/O. This is
-  the only Worldview/Cesium/QGIS/etc.-specific code in the system.
+  the only MIO Worldview/Cesium/QGIS/etc.-specific code in the system.
 - **Bottom half:** the application's native state and the application itself,
   used unmodified.
 
@@ -78,6 +78,6 @@ ingests application-specific artifacts directly.
 
 ## Concrete instances
 
-- [Worldview adapter](./worldview-geoui-interaction.md) — the bottom half is
-  Worldview's permalink schema + URL wire format + NASA Worldview, plumbed
+- [MIO Worldview adapter](./worldview-geoui-interaction.md) — the bottom half is
+  MIO Worldview's permalink schema + URL wire format + NASA MIO Worldview, plumbed
   to the same MCP surface shown above.

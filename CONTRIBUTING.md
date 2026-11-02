@@ -83,7 +83,7 @@ Markers: `integration` (spawns a subprocess or touches the network), `agents`
     `window.geoui.describe()` says what is supported, and only the agent's
     prompt names MapLibre. The app (`demo/maplibre/maplibre_geo_application`)
     imports only `@geoui/react-adapter` (through the Vite alias to its source). The three tool
-    names are the same as the Worldview server's (rule 5); the bridge's
+    names are the same as the MIO Worldview server's (rule 5); the bridge's
     contract golden is `demo/maplibre/tests/mcp/fixtures/bridge_contract.json`
     (`scripts/dump_mcp_contract.py local --module maplibre.mcp.server:mcp
     --golden <that path> --update-golden`).

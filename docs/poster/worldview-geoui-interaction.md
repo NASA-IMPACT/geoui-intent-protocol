@@ -1,8 +1,8 @@
-# Worldview ⇄ GeoUI Protocol — Interaction Diagram
+# MIO Worldview ⇄ GeoUI Protocol — Interaction Diagram
 
-Bidirectional flow between the IESO Worldview Agent and NASA Worldview via the
-GeoUI Protocol. The agent reasons in `GeoIntent` only; a Worldview-side adapter
-translates to/from the existing `WorldviewPermalinkInputSchema` and Worldview's
+Bidirectional flow between the IESO MIO Worldview Agent and NASA MIO Worldview via the
+GeoUI Protocol. The agent reasons in `GeoIntent` only; a MIO Worldview-side adapter
+translates to/from the existing `WorldviewPermalinkInputSchema` and MIO Worldview's
 URL wire format.
 
 ```
@@ -46,15 +46,15 @@ URL wire format.
 ## Reading the diagram
 
 - **Top half (above the MCP line):** the agent's reasoning loop. It only ever
-  produces or consumes `GeoIntent` — never sees Worldview-specific shapes.
+  produces or consumes `GeoIntent` — never sees MIO Worldview-specific shapes.
   This is the bounded-capability contract.
 - **MCP boundary:** the two new tools — `render_intent` (agent → app) and
   `get_state` (app → agent). The protocol's externally observable interface
-  for the Worldview adapter.
-- **Adapter band:** translates between portable `GeoIntent` and Worldview's
+  for the MIO Worldview adapter.
+- **Adapter band:** translates between portable `GeoIntent` and MIO Worldview's
   existing `WorldviewPermalinkInputSchema`. Pure functions, no I/O. This is
-  where Worldview-specific mapping lives.
-- **Bottom half:** the existing permalink tool + Worldview itself, unchanged.
+  where MIO Worldview-specific mapping lives.
+- **Bottom half:** the existing permalink tool + MIO Worldview itself, unchanged.
   URL is the wire format for both directions (emitted by `build_url`, parsed
   by a new `parse_url`).
 

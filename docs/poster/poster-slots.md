@@ -62,13 +62,13 @@ itself requires no modification.
 > for the poster.
 >
 > *Skipped, per current poster scope: the VLM-baseline
-> diagram and the Worldview-specific instance diagram.*
+> diagram and the MIO Worldview-specific instance diagram.*
 
 ### Image B — Benchmark results chart
 
 **File:** `figs/results_chart.png`
 
-**Caption.** Per-task cost on iterative NASA Worldview
+**Caption.** Per-task cost on iterative NASA MIO Worldview
 workflows — GeoUI Intent Protocol vs. VLM + browser-control
 baseline. Same agent, same tasks; only the interaction
 mechanism varies. Averaged over n = 4 workflows; log-scale.
@@ -122,7 +122,7 @@ pairs a vision-language model with browser automation: the
 agent observes the page through screenshots and the
 accessibility / DOM tree, then acts by clicking, typing, and
 dragging. This pattern generalizes across web applications,
-but breaks down on geospatial viewers such as NASA Worldview,
+but breaks down on geospatial viewers such as NASA MIO Worldview,
 which render the map through **canvas + WebGL surfaces that
 the DOM does not expose**. As a result, the agent cannot
 recover semantic map state from its observations, and every
@@ -139,9 +139,9 @@ application's current state in the same shape. A thin
 **per-app adapter** translates between `GeoIntent` and the
 application's native representation.
 
-We instantiate the protocol against **NASA Worldview** via an
-adapter that maps `GeoIntent` to Worldview's existing
-permalink schema; **Worldview itself is unmodified**. The
+We instantiate the protocol against **NASA MIO Worldview** via an
+adapter that maps `GeoIntent` to MIO Worldview's existing
+permalink schema; **MIO Worldview itself is unmodified**. The
 schema is built to extend in the spirit of **STAC extensions**:
 a small **core** covers layering, viewport, and time;
 **namespaced extensions** (compare, chart, raster styling, …)
@@ -151,7 +151,7 @@ declare additional capability per intent.
 
 ## 7b. Data & Results *(replaces template "Text")*
 
-**Experimental setup.** One agent — the **IESO Worldview
+**Experimental setup.** One agent — the **IESO MIO Worldview
 agent** — run as two variants: a **baseline** using
 screenshots + DOM + Playwright browser control, and a
 **treatment** using the GeoUI Intent Protocol. Discovery tools
@@ -159,7 +159,7 @@ screenshots + DOM + Playwright browser control, and a
 comparison isolates the *interaction mechanism* rather than
 the discovery loop.
 
-**Workloads.** Four iterative Worldview queries: initial
+**Workloads.** Four iterative MIO Worldview queries: initial
 single-layer render, date refinement, spatial pan, and one
 organic anchor workflow.
 
@@ -204,7 +204,7 @@ field.
 ## 8. Conclusions
 
 - The **GeoUI Intent Protocol** delivers, on iterative NASA
-  Worldview workflows (n = 4), **~15× lower per-task cost**
+  MIO Worldview workflows (n = 4), **~15× lower per-task cost**
   and **correct answers** on questions where the VLM +
   screenshot baseline returns wrong answers.
 
@@ -244,4 +244,4 @@ field.
       [wrong]; GeoUI: Gulf of Mexico"), and whether to back
       this with screenshots or a side-by-side log excerpt.
 - [ ] References slot — if template has one, add: STAC,
-      Worldview, MCP, pydantic-ai
+      MIO Worldview, MCP, pydantic-ai

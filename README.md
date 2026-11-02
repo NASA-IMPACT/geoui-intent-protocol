@@ -7,14 +7,6 @@ time, layers, plus opt-in extensions); a thin adapter translates it to and
 from the target application's native state. The application itself is never
 modified.
 
-On iterative NASA Worldview workflows the protocol path was roughly an order
-of magnitude cheaper per task than a vision-language-model plus browser-control
-baseline, and it answered correctly on questions the baseline could not
-(Worldview renders through canvas and WebGL, so semantic map state is not
-recoverable from pixels). See [`docs/poster/`](docs/poster/) for the poster
-presented at the 2nd ESA-NASA International Workshop on AI Foundation Models
-for Earth Observation (NASA MSFC, May 2026).
-
 ## Architecture
 
 ### Block diagram
@@ -47,8 +39,8 @@ touches the app.
 
 Three projects in one uv workspace, plus an npm workspace. `geoui-protocol`
 (import `geoui`) is the library and depends on pydantic alone. `geoui-demos`
-(`demo/`) holds the two demos: `worldview` is the NASA Worldview reference
-implementation and carries everything Worldview-specific; `maplibre` is the
+(`demo/`) holds the two demos: `worldview` is the NASA MIO Worldview reference
+implementation and carries everything MIO Worldview-specific; `maplibre` is the
 GeoUI MCP over CDP for any page that exposes `window.geoui`, plus its agent,
 with the React map app it drives beside it. `geouibench` (`benchmarks/`) is
 the benchmark utility. On the TypeScript side, `@geoui/react-adapter`
@@ -60,7 +52,7 @@ the benchmark utility. On the TypeScript side, `@geoui/react-adapter`
 | `geoui/core.py`, `geoui/extensions/` | **The protocol.** `GeoIntent`, `Viewport`, `TimeWindow`, `LayerRef`; `compare`, `chart`, `raster-styling` extensions; `ExtensionSpec` (`describe()`, `declare`, `used_prefixes`) for consumers that advertise what they support | pydantic |
 | `schemas/`, `scripts/export_schemas.py` | The protocol's JSON Schemas (core + one `describe()` document per extension), exported from the pydantic models and drift-checked by `tests/test_schemas.py`; what non-Python consumers read | — |
 | `demo/pyproject.toml` | The demos project (`geoui-demos`, packages `worldview` and `maplibre`), a uv workspace member installed editable by `uv sync` | geoui-protocol |
-| `demo/worldview/adapter/` | Reference adapter: `GeoIntent` ⇄ Worldview permalink URL (`mapping.py`, `permalink.py`, `url_parser.py`) | geoui, dateutil |
+| `demo/worldview/adapter/` | Reference adapter: `GeoIntent` ⇄ MIO Worldview permalink URL (`mapping.py`, `permalink.py`, `url_parser.py`) | geoui, dateutil |
 | `demo/worldview/tools/` | The two protocol operations as plain async functions plus request/response models; `pai.py` exposes them (and `worldview_permalink_tool`) as pydantic-ai toolsets | adapter; pydantic-ai for `pai.py` |
 | `demo/worldview/mcp/` | FastMCP server exposing `geo_ui_render_intent_tool` and `geo_ui_get_state_tool`; CLI `worldview-mcp` | fastmcp |
 | `demo/worldview/plugin.py` | Loads a Claude Code plugin for pydantic-ai: `SKILL.md` as system prompt, `references/` behind `read_reference`, `.mcp.json` servers with `${user_config.*}` filled from the environment | pydantic-ai |
@@ -74,7 +66,7 @@ the benchmark utility. On the TypeScript side, `@geoui/react-adapter`
 | `demo/maplibre/` | **The MapLibre demo's Python side** (import `maplibre`): the GeoUI MCP over CDP for any `window.geoui` page. `cdp.py` (Playwright `connect_over_cdp` session), `catalogue.py` (the page's catalogue checked against the library, consumer-side pre-declaration), `tools/` (the three tools; `pai.py` as a pydantic-ai toolset), `mcp/server.py` (`maplibre-mcp`), `agents/maplibre_agent.py` | geoui, playwright, fastmcp, pydantic-ai |
 | `tests/` | Library tests (`test_core.py`) and repo-level checks | — |
 | `benchmarks/geouibench/` | `geouibench`: the benchmark utility (simulated multi-turn user, per-turn traces, six metrics, synthetic goldens, offline re-scoring, cross-agent summary, `python -m geouibench` CLI); names no application | deepeval, pydantic-ai |
-| `benchmarks/worldview/` | The Worldview app directory for `geouibench`: `app.py` (both agents, state read-back, prepare hook), gold + synthetic datasets, committed results per run | geouibench, demo |
+| `benchmarks/worldview/` | The MIO Worldview app directory for `geouibench`: `app.py` (both agents, state read-back, prepare hook), gold + synthetic datasets, committed results per run | geouibench, demo |
 | `benchmarks/maplibre/` | The MapLibre app directory for `geouibench`: `app.py` (the bridge's agent, state read from the page as a `geoui+json` handle), the gold set without chart, committed results | geouibench, demo |
 | `benchmarks/worldview_legacy/` | The earlier notebook-driven procedure: prompt suite, workflow scripts, frozen poster run logs | — |
 | `docs/spec.md` | GeoUI Protocol v1.0.0 specification | — |
@@ -83,7 +75,7 @@ the benchmark utility. On the TypeScript side, `@geoui/react-adapter`
 | `scripts/dump_mcp_contract.py` | Print any MCP server's tool contract as JSON, for diffing | fastmcp |
 
 Importing `geoui` pulls in nothing from `worldview`, `maplibre`,
-pydantic-ai or fastmcp. Two adapter paths exist today: the Worldview adapter
+pydantic-ai or fastmcp. Two adapter paths exist today: the MIO Worldview adapter
 (Python, URL-based, under `demo/worldview`) and the React SDK + CDP bridge
 (for apps whose state is not in a URL); the shared Python interface they will
 eventually meet in is not lifted into `geoui` yet.
@@ -222,8 +214,8 @@ Benchmarking another demo is an `app.py` plus a gold dataset in a new directory
 under `benchmarks/`; see `benchmarks/README.md` (the utility, the app contract,
 dataset format, metrics, how traces are captured), `benchmarks/geouibench/README.md`
 (every utility and how to call it) and
-`benchmarks/worldview/README.md` (running, reading and verifying a Worldview run).
-`HANDOVER.md` has the operational detail, including the Playwright-over-CDP design
+`benchmarks/worldview/README.md` (running, reading and verifying a MIO Worldview run).
+[`docs/handover.md`](docs/handover.md) has the operational detail, including the Playwright-over-CDP design
 and known gotchas.
 
 ## Tests

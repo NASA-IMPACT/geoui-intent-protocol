@@ -85,7 +85,7 @@ fields.
 A consumer (an application or the tool layer in front of it) SHOULD publish
 the extensions it supports and MAY pre-declare their URIs on the documents it
 receives, so that producers only fill the fields of the extensions they use;
-it MUST reject fields of extensions it does not support. The Worldview
+it MUST reject fields of extensions it does not support. The MIO Worldview
 reference tools do this: `geo_ui_list_intent_extensions_tool` publishes the
 list, `geo_ui_render_intent_tool` pre-declares it.
 

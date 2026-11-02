@@ -25,7 +25,7 @@ runner reads from this catalogue (or its codified twin in `workflows.py`).
   (`viewport.bbox`, `chart:area`) — they vary too much across plausibly-correct
   framings to be useful as pass/fail signals. Tokens are still counted on the
   bbox-changing turns; only the strict equivalence check is skipped.
-- **Auto-injected layers ignored:** Worldview's permalink tool always
+- **Auto-injected layers ignored:** MIO Worldview's permalink tool always
   prepends a base reflectance layer and appends `Coastlines_15m` /
   `Reference_Features_15m`. The judge will strip those before comparison.
 
@@ -63,7 +63,7 @@ remain on). Two options if a stronger T3 is wanted:
 ## Workflow B — Saharan dust transport over the Atlantic
 
 Longitudinal time-series scenario. Heavier on time-stepping; chart-with-range-
-refinement at the end. Worldview-iconic.
+refinement at the end. MIO Worldview-iconic.
 
 | # | User utterance | Expected state (highlights) |
 |---|---|---|
@@ -85,14 +85,14 @@ exercises layer-stack semantics more than A or B.
 
 | # | User utterance | Expected state (highlights) |
 |---|---|---|
-| 1 | "Show chlorophyll concentration over Lake Erie in late August 2024." | layers: chlorophyll layer id (TBD from Worldview catalogue); time ≈ `2024-08-25` |
+| 1 | "Show chlorophyll concentration over Lake Erie in late August 2024." | layers: chlorophyll layer id (TBD from MIO Worldview catalogue); time ≈ `2024-08-25` |
 | 2 | "Add VIIRS true-colour imagery so I can see clouds." | layers include `VIIRS_SNPP_CorrectedReflectance_TrueColor` |
 | 3 | "Make the chlorophyll layer 60% opaque so I can see both." | chlorophyll layer opacity: `0.6` |
 | 4 | "Chart the mean chlorophyll in the western basin for August 2024." | chart on; chart layer: chlorophyll layer; chart time: `2024-08-01`…`2024-08-31` |
 | 5 | "Compare this scene to the same week last year." | compare on; compare time ≈ `2023-08-25` |
 
 **Extensions exercised:** chart (T4), compare (T5).
-**Caveat:** the exact chlorophyll layer id needs lookup against Worldview's
+**Caveat:** the exact chlorophyll layer id needs lookup against MIO Worldview's
 GIBS catalogue before this is shippable. A and B use ids already present in
 `akd_ext/tools/worldview/permalink.py` (`BASE_LAYERS`).
 

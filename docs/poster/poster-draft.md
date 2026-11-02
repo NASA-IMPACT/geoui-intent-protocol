@@ -35,7 +35,7 @@ geospatial-intent schema (STAC-inspired core + namespaced
 extensions) and a thin adapter pattern that lets any geospatial
 application expose itself to agents through one bounded contract.
 
-**Empirical result:** on iterative NASA Worldview workflows, a
+**Empirical result:** on iterative NASA MIO Worldview workflows, a
 protocol-based agent costs **~5× fewer effective tokens and
 ~10× fewer tool calls per work turn** than a vision+DOM baseline
 that drives the same UI manually. **One order of magnitude per
@@ -101,21 +101,21 @@ application-specific concern lives in the adapter.
 
 ---
 
-## 4. Worldview adapter — concrete instance
+## 4. MIO Worldview adapter — concrete instance
 
-To validate the protocol, we wrap NASA Worldview behind a thin
-adapter. Worldview already has a validated `WorldviewPermalinkInputSchema`
+To validate the protocol, we wrap NASA MIO Worldview behind a thin
+adapter. MIO Worldview already has a validated `WorldviewPermalinkInputSchema`
 and a permalink URL wire format — the adapter just maps GeoIntent
-↔ permalink input ↔ URL. **Worldview itself is unmodified.**
+↔ permalink input ↔ URL. **MIO Worldview itself is unmodified.**
 
 - `intent_to_url(GeoIntent) -> str` — emit a permalink
-- `url_to_intent(str) -> GeoIntent` — parse Worldview's address bar back into intent
+- `url_to_intent(str) -> GeoIntent` — parse MIO Worldview's address bar back into intent
 - MCP tools `geoui_render_intent` and `geoui_get_state` wrap these
-- Agent navigates the live Worldview page via Playwright after `render_intent` returns a URL
+- Agent navigates the live MIO Worldview page via Playwright after `render_intent` returns a URL
 
 **Iterative loop in practice** (refining turn):
 
-1. Read current Worldview URL from the browser (`window.location.href`).
+1. Read current MIO Worldview URL from the browser (`window.location.href`).
 2. `get_state(url)` → parsed `GeoIntent`.
 3. Modify only the fields the user changed (e.g. `time.instant`, `viewport.bbox`).
 4. `render_intent(intent)` → new URL.
@@ -128,7 +128,7 @@ and a permalink URL wire format — the adapter just maps GeoIntent
 ## 5. The comparison — protocol vs VLM-baseline
 
 We benchmark the **same agent skeleton** on the **same set of
-Worldview tasks**, varying only the *interaction mechanism*:
+MIO Worldview tasks**, varying only the *interaction mechanism*:
 
 - **GeoUI variant** — uses `geoui_render_intent` / `geoui_get_state`. Two protocol tool calls per render.
 - **VLM-baseline variant** — uses Playwright MCP directly: screenshot, accessibility snapshot, click, type, drag. No protocol.
@@ -286,4 +286,4 @@ landscape if the hero chart is the visual anchor.
 - [ ] QR code → repo / demo URL
 - [ ] Pick visual medium (LaTeX beamerposter? typst? Inkscape SVG?)
 - [ ] Color palette + typography decisions
-- [ ] References (any prior work you want to cite — STAC, Worldview, AKD, etc.)
+- [ ] References (any prior work you want to cite — STAC, MIO Worldview, AKD, etc.)

@@ -1,9 +1,9 @@
-# Worldview benchmark — GeoUI agent vs VLM baseline on geouibench
+# MIO Worldview benchmark — GeoUI agent vs VLM baseline on geouibench
 
-A re-runnable, verifiable comparison of the two Worldview agents in `demo/worldview/agents`:
+A re-runnable, verifiable comparison of the two MIO Worldview agents in `demo/worldview/agents`:
 
 - **geoui** — the `worldview-assistant` skill on a bare pydantic-ai agent; renders a
-  `GeoIntent` to a Worldview permalink and opens it (browser: navigate + read URL only).
+  `GeoIntent` to a MIO Worldview permalink and opens it (browser: navigate + read URL only).
 - **vlm** — the non-GeoUI `mio-worldviewagent-v2` skill with full Playwright control;
   clicks and types on the live page and reads `window.location.href` back.
 

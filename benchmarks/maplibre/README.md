@@ -8,10 +8,10 @@ the [MapLibre demo](../../demo/maplibre) through its GeoUI MCP over CDP (the `ma
   GeoUI tools. No skill, no discovery MCPs, no browser tools; the page's catalogue
   (`geo_ui_list_intent_extensions_tool`) is all it knows about the application.
 
-What differs from Worldview is how the state is read back. The agent reports no URL; after every turn
+What differs from MIO Worldview is how the state is read back. The agent reports no URL; after every turn
 `MaplibreApp.snapshot()` reads `window.geoui.getState()` from the live page and stores the GeoIntent
 itself as the turn's handle (`geoui+json:<json>`), which `observe()` parses at scoring time, so
-`geouibench score` reruns offline exactly as for Worldview.
+`geouibench score` reruns offline exactly as for MIO Worldview.
 
 ## Layout
 
@@ -35,9 +35,9 @@ uv run python -m geouibench summarize benchmarks/maplibre 2026-10-29-gold
 `prepare()` launches or reuses Chromium on CDP (`demo/chromium.sh`) and fails early with the `npm run dev`
 hint when the demo is not answering. `OPENAI_API_KEY` in `.env` is needed for the agent and the judge.
 
-## Comparing with Worldview
+## Comparing with MIO Worldview
 
 Same goldens, same metrics, same budgets: the per-golden Success / Completion / efficiency numbers in
-`summary.md` are directly comparable with the Worldview geoui agent's. Expect fewer tool calls (no discovery
+`summary.md` are directly comparable with the MIO Worldview geoui agent's. Expect fewer tool calls (no discovery
 servers, no browser navigation: list, optional get_state, render) and no "undeclared extension" retries (the
 page tells the agent what it supports).

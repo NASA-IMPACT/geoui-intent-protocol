@@ -10,13 +10,13 @@ open while you work. The poster-era narrative is in `docs/poster/HANDOVER.md`.
 ## 1. What this is
 
 The GeoUI Intent Protocol **decouples agent reasoning from app-specific
-rendering**. Instead of teaching an LLM the NASA Worldview permalink grammar,
+rendering**. Instead of teaching an LLM the NASA MIO Worldview permalink grammar,
 or letting it click around the UI, the agent emits a small, declarative,
 application-agnostic document, a `GeoIntent`, describing the *desired map
-state*. A pure adapter translates it to and from Worldview's permalink URL.
+state*. A pure adapter translates it to and from MIO Worldview's permalink URL.
 Thesis: an intent schema is an order of magnitude cheaper (tokens, tool calls,
 latency) than driving the UI with a vision-language model, and it stays
-reproducible and auditable. The repo ships the protocol, the Worldview
+reproducible and auditable. The repo ships the protocol, the MIO Worldview
 adapter, the two tools (plain functions, an MCP server, and a pydantic-ai toolset), the
 two reference agents, a marimo chat demo, and the head-to-head benchmark.
 
@@ -38,9 +38,9 @@ two reference agents, a marimo chat demo, and the head-to-head benchmark.
 | `docs/spec.md` | GeoUI Protocol v1.0.0 spec (STAC-inspired). The field-level contract. | — |
 | `geoui/core.py` | `GeoIntent`, `Viewport`, `TimeWindow`, `LayerRef`, `extension_fields()`. | pydantic |
 | `geoui/extensions/{compare,chart,raster_styling}.py` | Each defines `URI`, `PREFIX`, a typed `*Fields` model, `extract` / `inject` / `validate`. | pydantic |
-| `demo/worldview/adapter/permalink.py` | Worldview-native side: `LayerSpec`, `WorldviewPermalinkInputSchema`, `build_url`. Copied from akd-ext's permalink tool with the akd `BaseTool` class removed; `build_url` is now a module function. | pydantic, dateutil |
+| `demo/worldview/adapter/permalink.py` | MIO Worldview-native side: `LayerSpec`, `WorldviewPermalinkInputSchema`, `build_url`. Copied from akd-ext's permalink tool with the akd `BaseTool` class removed; `build_url` is now a module function. | pydantic, dateutil |
 | `demo/worldview/adapter/url_parser.py` | Inverse of `build_url`. Hand-written layer-grammar parser. | — |
-| `demo/worldview/adapter/mapping.py` | The **only** module that knows GeoIntent ⇄ Worldview. `intent_to_permalink_input` / `permalink_input_to_intent`, wrappers `intent_to_url` / `url_to_intent`. | — |
+| `demo/worldview/adapter/mapping.py` | The **only** module that knows GeoIntent ⇄ MIO Worldview. `intent_to_permalink_input` / `permalink_input_to_intent`, wrappers `intent_to_url` / `url_to_intent`. | — |
 | `demo/worldview/tools/__init__.py` | The three operations as async functions (render, get-state, `geo_ui_list_intent_extensions_tool`), request/response models, the agent-facing docstrings, and `prepare_intent` (pre-declares the adapter's `SUPPORTED_EXTENSIONS` on every intent, refuses other namespaces). The intent field description and the catalogue are generated from that list. Single source of truth for all three tool surfaces. | adapter |
 | `demo/worldview/mcp/_describe.py` | Rebuilds akd's `INPUT/OUTPUT FIELD DESCRIPTIONS` description suffix so the MCP contract matches the original deployment. | — |
 | `demo/worldview/mcp/server.py` | `FastMCP("geoui")` with the three tools; `main()` is the `worldview-mcp` CLI. Absolute `worldview.*` imports only: FastMCP loads this file standalone. | fastmcp |
@@ -57,7 +57,7 @@ two reference agents, a marimo chat demo, and the head-to-head benchmark.
 | `demo/start.sh` | Sources `chromium.sh`, warms MCPs (plugin variants) or checks the MapLibre dev server (`AGENT=maplibre`), opens the marimo notebook. `AGENT=geoui` (default), `vlm` or `maplibre`. | uv, npx |
 | `demo/chat.py` | One marimo multi-turn chat app for all three agents; `AGENT=geoui` (default), `vlm` or `maplibre` picks the factory, text-output class, intro text, example prompts and benchmark-log label. Carries pydantic-ai `message_history` across turns; attaches Playwright per turn via CDP. | marimo |
 | `benchmarks/geouibench/` | **The benchmark utility, mechanism-neutral; names no application.** `app.py` (`BenchmarkApp` protocol, `UIState`, `prepare_app`), `appdir.py` (app directories: load `app.py` by path, resolve datasets by name), `state.py` (expected vs observed UI state), `datasets.py` (goldens + metadata, per-agent openers, dataset hash), `records.py` (TurnRecord/ErrorRecord rows), `tracing.py` (deepeval pydantic-ai instrumentation as a capability, `traced_turn`, `TurnTrace`), `harness.py` (`ConversationRunner.respond`, the simulator callback; CDP tab reset; transcripts), `metrics.py` (the six metrics + `state_reached_controller`), `runner.py` (`run_golden`: simulate → assert_test → record; `ensure_run_info`), `evals/test_benchmark.py` (the one deepeval suite, driven by `BENCHMARK_APP`), `synthetic.py` (`SyntheticStyle`, `generate` around `deepeval generate`), `score.py` (offline re-score from traces), `summary.py` / `summarize.py` (rows, ratios, totals, markdown), `run_dir.py` (run.json, path scrubbing), `cli.py` (`python -m geouibench run\|score\|summarize\|synthetic\|datasets`). Tests under `geouibench/tests/` with a `FakeApp` on `TestModel` and a stand-in simulator. | deepeval, pydantic-ai |
-| `benchmarks/worldview/` | **The Worldview app directory** (no package, no pyproject). `app.py` (`APP = WorldviewApp()`: both factories, `observe(url)`, discovery tools, roles, `DEFAULT_BUDGETS`, `prepare()` = plugin check + `demo/chromium.sh` + MCP warm-up, `SYNTHETIC_STYLE`), `datasets/gold_dataset.json` (Core 1–6 + workflows A/B with openers, expected state, checkpoints), `datasets/synthetic_queries.json`, `tests/`, `results/<run-id>/` (committed runs). | geouibench, demo |
+| `benchmarks/worldview/` | **The MIO Worldview app directory** (no package, no pyproject). `app.py` (`APP = WorldviewApp()`: both factories, `observe(url)`, discovery tools, roles, `DEFAULT_BUDGETS`, `prepare()` = plugin check + `demo/chromium.sh` + MCP warm-up, `SYNTHETIC_STYLE`), `datasets/gold_dataset.json` (Core 1–6 + workflows A/B with openers, expected state, checkpoints), `datasets/synthetic_queries.json`, `tests/`, `results/<run-id>/` (committed runs). | geouibench, demo |
 | `benchmarks/worldview_legacy/prompts.md`, `benchmarks/worldview_legacy/workflows.md` | Prompt suite (Core 6 + Optional 4) and 5-turn scenario scripts (A: CA wildfire smoke; B: Saharan dust; C: Lake Erie bloom). | — |
 | `benchmarks/worldview_legacy/results/poster-2026-05/` | Frozen `runs.jsonl` (51 rows) and `errors.jsonl` (22 rows) behind the poster. Absolute paths in tracebacks were replaced (`<worktree>` for the source checkout, `<python>` for the interpreter install). | — |
 | `scripts/dump_mcp_contract.py` | Dump any server's tool contract as JSON (`--module` picks the server, `--golden` the fixture). | fastmcp |
@@ -67,7 +67,7 @@ two reference agents, a marimo chat demo, and the head-to-head benchmark.
 | `demo/maplibre/maplibre_geo_application/` | React + MapLibre + GIBS app on the SDK: `App.tsx` owns the state and attaches it; `layers.ts` is the catalogue (`describe().layers`); `components/MapView.tsx` fits itself from a fit request (the primary map is uncontrolled). | @geoui/react-adapter, react-map-gl |
 | `demo/maplibre/` | **The MapLibre demo's Python side: the GeoUI MCP over CDP and its agent** (import `maplibre`, same `geoui-demos` member as `worldview`). `cdp.py` (`BridgeSession`: `connect_over_cdp`, page by origin, tab opened via the browser's `/json/new`), `catalogue.py` (`check_catalogue` against `geoui.extensions.ALL`, `prepare_intent`), `tools/` (docs, models, operations; `pai.py` toolset with `ModelRetry`), `mcp/server.py` (`create_server`, one lazy reconnecting session, `maplibre-mcp`), `agents/maplibre_agent.py` (bare agent, three tools, short prompt). Tests use `tests/_fake_session.py`; the contract golden is `tests/mcp/fixtures/bridge_contract.json`. | geoui, playwright, fastmcp, pydantic-ai |
 | `benchmarks/maplibre/` | The MapLibre app directory: `app.py` (`MaplibreApp`: `output_url` is always `None`, `snapshot()` reads the page state as `geoui+json:<json>`, `observe()` parses it), the gold set minus chart with the geoui opener only, tests, `results/`. | geouibench, demo |
-| `docs/maplibre-demo/architecture.md` | Component / sequence / deployment diagrams (Mermaid) of the whole path and a Worldview-vs-MapLibre table. | — |
+| `docs/maplibre-demo/architecture.md` | Component / sequence / deployment diagrams (Mermaid) of the whole path and a MIO Worldview-vs-MapLibre table. | — |
 | `package.json`, `tsconfig.base.json`, `eslint.config.js` | npm workspaces (`sdk/geoui-react-adapter`, `demo/maplibre/maplibre_geo_application`); `npm test`, `npm run build`, `npm run lint`, `npm run gen:types`. | node |
 | `demo/pyproject.toml` | The `geoui-demos` project (packages `worldview` and `maplibre`): a uv workspace member that depends on `geoui-protocol` and owns the heavy dependencies (pydantic-ai, fastmcp, marimo, playwright). One member for both demos because uv refuses a member nested inside another member's directory. The root dev group installs it editable. | — |
 | `benchmarks/pyproject.toml` | The third workspace member, `geouibench` (owns deepeval). The root dev group installs it editable; the demo never depends on it. App directories under `benchmarks/` are not members. | — |
@@ -87,7 +87,7 @@ deepeval. Nothing imports akd. The README import check depends on the first
 clause.
 
 **Why two projects.** The library is meant to be published and depended on;
-the Worldview code is a reference implementation until a generic adapter and
+the MIO Worldview code is a reference implementation until a generic adapter and
 MCP layer exist in `geoui`. The demo is a workspace member rather than a plain
 directory because `worldview` has to be importable from four places with
 different `sys.path`s: marimo (puts `demo/` on the path), FastMCP's by-path
@@ -114,7 +114,7 @@ error (see the frozen `errors.jsonl`). URIs are identifiers, not fetched;
 
 - **CRS ↔ projection:** only `EPSG:4326` (geographic), `EPSG:3413` (arctic),
   `EPSG:3031` (antarctic). Anything else raises.
-- **Time coercion:** the Worldview `t` param is an instant. A range on the
+- **Time coercion:** the MIO Worldview `t` param is an instant. A range on the
   root or compare time raises; ranges are only meaningful on `chart:time`.
 - **Round-trip property:** `url_to_intent(intent_to_url(x))` preserves logical
   state. Parameter order may differ, a compare URL without `t1` gains one
@@ -255,7 +255,7 @@ agent with only the three GeoUI tools (in-process toolset over a per-call CDP
 session; no skill, discovery MCPs or browser tools), and
 `benchmarks/maplibre/app.py` uses the `snapshot()` hook to read
 `window.geoui.getState()` after each turn as the handle `observe()` parses
-offline. The gold set is the Worldview one minus chart, geoui opener only,
+offline. The gold set is the MIO Worldview one minus chart, geoui opener only,
 workflows rewritten to compare / sensor switch / styling (A) and date step /
 compare / opacity (B). The first full run is `benchmarks/maplibre/results/`.
 
@@ -331,7 +331,7 @@ compare / opacity (B). The first full run is `benchmarks/maplibre/results/`.
 - **MCP tools carry their own retry budget.** pydantic-ai's agent-level
   `retries` never reaches MCP tools; each server has `max_retries` (default
   1). The VLM baseline's Playwright server gets `max_retries=3` and
-  `--timeout-action 15000` because Worldview's first-visit tour overlay made
+  `--timeout-action 15000` because MIO Worldview's first-visit tour overlay made
   a `browser_click` time out twice and abort the turn. The GeoUI agent never
   clicks and keeps 1.
 - **The VLM baseline has no URL builder.** With `worldview_permalink_tool`

@@ -1,8 +1,8 @@
-# GeoUI Worldview demo
+# GeoUI MIO Worldview demo
 
-The reference implementation of the GeoUI Intent Protocol, for NASA Worldview. Worldview keeps its
-whole map state in the URL, so the adapter maps a `GeoIntent` to and from a Worldview permalink, and
-Worldview itself is never modified. This package (`worldview`, part of the `geoui-demos` workspace
+The reference implementation of the GeoUI Intent Protocol, for NASA MIO Worldview. It keeps its
+whole map state in the URL, so the adapter maps a `GeoIntent` to and from a MIO Worldview permalink, and
+MIO Worldview itself is never modified. This package (`worldview`, part of the `geoui-demos` workspace
 member) holds the adapter, the tools, the MCP server and the two agents that are compared in the
 benchmark.
 
@@ -31,41 +31,41 @@ benchmark.
 #### Block diagram
 
 The agent reasons in `GeoIntent` only. The GeoUI tools encode it into a permalink through the URL
-adapter, and the agent opens that URL in Worldview with Playwright. The observation flow reads the
+adapter, and the agent opens that URL in MIO Worldview with Playwright. The observation flow reads the
 live URL back and decodes it into a `GeoIntent`. The discovery MCPs are used only to find layers and
 check temporal coverage.
 
-![Worldview GeoUI agent block diagram](diagrams/block-diagram.png)
+![MIO Worldview GeoUI agent block diagram](diagrams/block-diagram.png)
 
 #### Render sequence
 
 The first turn: the agent discovers a layer, renders a `GeoIntent` to a permalink and opens it.
 
-![Worldview GeoUI render sequence](diagrams/render-sequence.png)
+![MIO Worldview GeoUI render sequence](diagrams/render-sequence.png)
 
 #### Get-state sequence
 
 A follow-up turn: the agent reads the live URL back as a `GeoIntent`, adds `compare:*` fields and
 renders again.
 
-![Worldview GeoUI get-state sequence](diagrams/get-state-sequence.png)
+![MIO Worldview GeoUI get-state sequence](diagrams/get-state-sequence.png)
 
 ### VLM baseline agent
 
 #### Block diagram
 
-The baseline has no protocol and no adapter. The agent drives Worldview through eleven Playwright
+The baseline has no protocol and no adapter. The agent drives MIO Worldview through eleven Playwright
 browser tools and observes it through screenshots and accessibility snapshots.
 
-![Worldview VLM baseline block diagram](diagrams/vlm-block-diagram.png)
+![MIO Worldview VLM baseline block diagram](diagrams/vlm-block-diagram.png)
 
 #### Sequence
 
 The agent loops through snapshot/screenshot → click/type/drag until the map looks right, then reads
-the final URL. Worldview draws its map with canvas/WebGL, so the agent cannot reliably recover
+the final URL. MIO Worldview draws its map with canvas/WebGL, so the agent cannot reliably recover
 layer, time or styling from the pixels.
 
-![Worldview VLM baseline sequence](diagrams/vlm-baseline-sequence.png)
+![MIO Worldview VLM baseline sequence](diagrams/vlm-baseline-sequence.png)
 
 ## Run
 
