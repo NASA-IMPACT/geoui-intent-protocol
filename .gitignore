@@ -32,3 +32,6 @@ benchmarks/worldview_legacy/errors.jsonl
 # deepeval scratch (results are committed per run under benchmarks/worldview/results/)
 .deepeval/
 .deepeval-cache.json
+
+# vite dep cache (demo/maplibre/maplibre_geo_application/.vite/)
+.vite/

@@ -89,11 +89,20 @@ it MUST reject fields of extensions it does not support. The MIO Worldview
 reference tools do this: `geo_ui_list_intent_extensions_tool` publishes the
 list, `geo_ui_render_intent_tool` pre-declares it.
 
-Example URIs (not yet hosted; placeholders for this spec):
+An extension URI is the address of its schema document. The extensions shipped
+with this library are published under
+`https://nasa-impact.github.io/geoui-intent-protocol/` (the repository's
+`schemas/` directory, served by GitHub Pages):
 
-- `https://geoui.org/ext/compare/v1.0.0`
-- `https://geoui.org/ext/chart/v1.0.0`
-- `https://geoui.org/ext/raster-styling/v1.0.0`
+- `https://nasa-impact.github.io/geoui-intent-protocol/ext/compare/v1.0.0/schema.json`
+- `https://nasa-impact.github.io/geoui-intent-protocol/ext/chart/v1.0.0/schema.json`
+- `https://nasa-impact.github.io/geoui-intent-protocol/ext/raster-styling/v1.0.0/schema.json`
+
+Each document is the JSON Schema of the extension's fields with `$id` equal
+to the URI and the metadata a consumer advertises (`name`, `scope`, `summary`,
+`keys`, `required`) under `x-geoui`. A published `v<version>` document never
+changes; a change to the fields is a new version, and so a new URI. Consumers
+compare URIs as strings and need not fetch them.
 
 ## Example — core only
 
@@ -119,9 +128,9 @@ Example URIs (not yet hosted; placeholders for this spec):
 {
   "geoui_version": "1.0.0",
   "geoui_extensions": [
-    "https://geoui.org/ext/compare/v1.0.0",
-    "https://geoui.org/ext/chart/v1.0.0",
-    "https://geoui.org/ext/raster-styling/v1.0.0"
+    "https://nasa-impact.github.io/geoui-intent-protocol/ext/compare/v1.0.0/schema.json",
+    "https://nasa-impact.github.io/geoui-intent-protocol/ext/chart/v1.0.0/schema.json",
+    "https://nasa-impact.github.io/geoui-intent-protocol/ext/raster-styling/v1.0.0/schema.json"
   ],
   "viewport": { "bbox": [-125, 32, -114, 42], "crs": "EPSG:4326" },
   "time": { "instant": "2025-09-15" },

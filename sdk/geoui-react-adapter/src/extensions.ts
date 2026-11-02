@@ -1,6 +1,6 @@
 /**
  * The shipped extension specs, exactly as `geoui.extensions.<name>.SPEC.describe()` lays them out in Python
- * (the JSON under schemas/extensions, embedded by scripts/gen-types.ts). An app attaches the ones it
+ * (rebuilt from the published schema.json under schemas/ext by scripts/gen-types.ts). An app attaches the ones it
  * implements; the agent sees that list through window.geoui.describe().
  */
 import type { ChartFields, CompareFields, RasterStylingFields } from "./generated/geo-intent";

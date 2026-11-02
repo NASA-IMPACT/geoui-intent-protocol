@@ -65,7 +65,7 @@ class TestGeoIntent:
 
     def test_namespaced_extras_round_trip_through_model_dump(self):
         doc = {
-            "geoui_extensions": ["https://geoui.org/ext/compare/v1.0.0"],
+            "geoui_extensions": ["https://nasa-impact.github.io/geoui-intent-protocol/ext/compare/v1.0.0/schema.json"],
             "viewport": {"bbox": [-125, 32, -114, 42], "crs": "EPSG:4326"},
             "time": {"instant": "2025-09-15"},
             "layers": [{"id": "MODIS_Aqua_Aerosol", "opacity": 0.8}],

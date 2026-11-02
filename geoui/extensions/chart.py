@@ -2,7 +2,7 @@
 
 Adds time-series statistical charting over an area-of-interest.
 
-Declared by URI: ``https://geoui.org/ext/chart/v1.0.0``
+Declared by URI: ``https://nasa-impact.github.io/geoui-intent-protocol/ext/chart/v1.0.0/schema.json``
 Namespace prefix: ``chart:``
 
 Required fields when used:
@@ -21,10 +21,11 @@ from typing import Self
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from geoui.core import GeoIntent, TimeWindow
-from geoui.extensions.spec import ExtensionSpec
+from geoui.extensions.spec import ExtensionSpec, ext_uri
 
-URI = "https://geoui.org/ext/chart/v1.0.0"
+VERSION = "1.0.0"
 PREFIX = "chart"
+URI = ext_uri(PREFIX, VERSION)
 
 
 class ChartFields(BaseModel):
@@ -84,6 +85,7 @@ SPEC = ExtensionSpec(
     uri=URI,
     prefix=PREFIX,
     scope="intent",
+    version=VERSION,
     fields=ChartFields,
     summary="Open a time-series chart of one layer over an area of interest and a date range.",
 )

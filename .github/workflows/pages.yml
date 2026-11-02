@@ -1,0 +1,45 @@
+# Publish schemas/ as the root of https://nasa-impact.github.io/geoui-intent-protocol/,
+# so every extension URI (schemas/ext/<name>/v<version>/schema.json) resolves to its file.
+#
+# Only the NASA-IMPACT repository has a Pages site; the same file in a fork or in the
+# upstream personal repository is skipped rather than failing. Pages must be enabled
+# once, by hand, with "Source: GitHub Actions" (Settings → Pages).
+name: Deploy schemas to Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "schemas/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.repository == 'NASA-IMPACT/geoui-intent-protocol'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check that schemas/ matches the pydantic models
+        uses: astral-sh/setup-uv@v6
+      - run: uv run --no-dev python scripts/export_schemas.py --check
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: schemas
+      - id: deployment
+        uses: actions/deploy-pages@v4

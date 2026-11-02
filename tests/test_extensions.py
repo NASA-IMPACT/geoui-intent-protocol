@@ -4,6 +4,7 @@ import pytest
 
 from geoui import GeoIntent, LayerRef, TimeWindow
 from geoui.extensions import ALL, ExtensionSpec, chart, compare, declare, raster_styling, used_prefixes
+from geoui.extensions.spec import SCHEMAS_BASE_URL
 
 ALL_URIS = [s.uri for s in ALL]
 
@@ -50,7 +51,9 @@ class TestSpecs:
     def test_all_lists_the_three_shipped_extensions_in_order(self):
         assert [s.prefix for s in ALL] == ["compare", "chart", "raster-styling"]
         assert [s.scope for s in ALL] == ["intent", "intent", "layer"]
-        assert all(isinstance(s, ExtensionSpec) and s.uri.startswith("https://geoui.org/ext/") for s in ALL)
+        assert all(isinstance(s, ExtensionSpec) for s in ALL)
+        assert [s.uri for s in ALL] == [f"{SCHEMAS_BASE_URL}/ext/{s.prefix}/v{s.version}/schema.json" for s in ALL]
+        assert [s.version for s in ALL] == ["1.0.0", "1.0.0", "1.0.0"]
 
     def test_describe_is_self_contained(self):
         d = compare.SPEC.describe()

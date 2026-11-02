@@ -2,7 +2,7 @@
 
 Adds A/B comparison (side-by-side or overlay) to a GeoIntent.
 
-Declared by URI: ``https://geoui.org/ext/compare/v1.0.0``
+Declared by URI: ``https://nasa-impact.github.io/geoui-intent-protocol/ext/compare/v1.0.0/schema.json``
 Namespace prefix: ``compare:``
 
 Required fields when used:
@@ -22,10 +22,11 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field
 
 from geoui.core import GeoIntent, LayerRef, TimeWindow
-from geoui.extensions.spec import ExtensionSpec
+from geoui.extensions.spec import ExtensionSpec, ext_uri
 
-URI = "https://geoui.org/ext/compare/v1.0.0"
+VERSION = "1.0.0"
 PREFIX = "compare"
+URI = ext_uri(PREFIX, VERSION)
 
 ActiveSide = Literal["A", "B"]
 CompareMode = Literal["swipe", "spy", "opacity"]
@@ -92,6 +93,7 @@ SPEC = ExtensionSpec(
     uri=URI,
     prefix=PREFIX,
     scope="intent",
+    version=VERSION,
     fields=CompareFields,
     summary="Compare two layer stacks or two dates side by side (swipe, spy or opacity blend).",
 )

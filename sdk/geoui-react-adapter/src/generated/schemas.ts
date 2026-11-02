@@ -350,7 +350,7 @@ export const COMPARE_SPEC = {
   ],
   "scope": "intent",
   "summary": "Compare two layer stacks or two dates side by side (swipe, spy or opacity blend).",
-  "uri": "https://geoui.org/ext/compare/v1.0.0"
+  "uri": "https://nasa-impact.github.io/geoui-intent-protocol/ext/compare/v1.0.0/schema.json"
 } as const;
 
 export const CHART_SPEC = {
@@ -486,7 +486,7 @@ export const CHART_SPEC = {
   ],
   "scope": "intent",
   "summary": "Open a time-series chart of one layer over an area of interest and a date range.",
-  "uri": "https://geoui.org/ext/chart/v1.0.0"
+  "uri": "https://nasa-impact.github.io/geoui-intent-protocol/ext/chart/v1.0.0/schema.json"
 } as const;
 
 export const RASTER_STYLING_SPEC = {
@@ -569,5 +569,5 @@ export const RASTER_STYLING_SPEC = {
   "required": [],
   "scope": "layer",
   "summary": "Restyle a raster layer: palette, style, value range and squash. Fields live on each LayerRef.",
-  "uri": "https://geoui.org/ext/raster-styling/v1.0.0"
+  "uri": "https://nasa-impact.github.io/geoui-intent-protocol/ext/raster-styling/v1.0.0/schema.json"
 } as const;

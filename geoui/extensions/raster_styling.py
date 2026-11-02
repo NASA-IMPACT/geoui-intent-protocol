@@ -4,7 +4,7 @@ Per-layer rendering hints for raster layers. Unlike the intent-level
 extensions (compare, chart), this extension's fields live on each
 LayerRef rather than on the GeoIntent root.
 
-Declared by URI: ``https://geoui.org/ext/raster-styling/v1.0.0``
+Declared by URI: ``https://nasa-impact.github.io/geoui-intent-protocol/ext/raster-styling/v1.0.0/schema.json``
 Namespace prefix: ``raster-styling:``
 
 Optional fields per layer:
@@ -20,10 +20,11 @@ from __future__ import annotations
 from pydantic import BaseModel, ConfigDict, Field
 
 from geoui.core import GeoIntent, LayerRef
-from geoui.extensions.spec import ExtensionSpec
+from geoui.extensions.spec import ExtensionSpec, ext_uri
 
-URI = "https://geoui.org/ext/raster-styling/v1.0.0"
+VERSION = "1.0.0"
 PREFIX = "raster-styling"
+URI = ext_uri(PREFIX, VERSION)
 
 
 class RasterStylingFields(BaseModel):
@@ -95,6 +96,7 @@ SPEC = ExtensionSpec(
     uri=URI,
     prefix=PREFIX,
     scope="layer",
+    version=VERSION,
     fields=RasterStylingFields,
     summary="Restyle a raster layer: palette, style, value range and squash. Fields live on each LayerRef.",
 )

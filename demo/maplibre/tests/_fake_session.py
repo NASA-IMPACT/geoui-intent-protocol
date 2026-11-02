@@ -8,7 +8,10 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any
 
-SCHEMAS = Path(__file__).resolve().parents[3] / "schemas" / "extensions"
+from geoui.extensions import ALL
+from geoui.extensions.spec import spec_from_schema_document
+
+SCHEMAS = Path(__file__).resolve().parents[3] / "schemas"
 DEFAULT_LAYERS = [
     {"id": "A", "title": "Layer A", "time": {"start": "2000-01-01", "end": None, "period": "P1D"}},
     {"id": "B", "title": "Layer B"},
@@ -16,13 +19,15 @@ DEFAULT_LAYERS = [
 
 
 def spec_json(name: str) -> dict[str, Any]:
-    return json.loads((SCHEMAS / f"{name}.json").read_text())
+    """The ``describe()`` document of extension ``name`` as read from its committed ``schema.json`` (what the SDK embeds)."""
+    spec = next(s for s in ALL if s.prefix == name)
+    return spec_from_schema_document(json.loads((SCHEMAS / spec.schema_path).read_text()))
 
 
 class FakeSession:
     """Replace-semantics state, the catalogue from the committed schema JSON, and a log of calls."""
 
-    def __init__(self, extensions=("compare", "raster_styling"), layers=DEFAULT_LAYERS, *, refuse: dict | None = None):
+    def __init__(self, extensions=("compare", "raster-styling"), layers=DEFAULT_LAYERS, *, refuse: dict | None = None):
         self.catalogue = {
             "version": "0.1.0-fake",
             "protocol": "1.0.0",

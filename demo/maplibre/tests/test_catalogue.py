@@ -6,17 +6,19 @@ from pathlib import Path
 import pytest
 
 from geoui import GeoIntent
-from geoui.extensions import chart, compare, raster_styling
+from geoui.extensions import ALL, chart, compare, raster_styling
+from geoui.extensions.spec import spec_from_schema_document
 from maplibre import BridgeError, Catalogue, check_catalogue, prepare_intent
 from maplibre.cdp import BridgeConfig, config_from_env
 
 ROOT = Path(__file__).resolve().parents[3]
-SCHEMAS = ROOT / "schemas" / "extensions"
+SCHEMAS = ROOT / "schemas"
+BY_PREFIX = {spec.prefix: spec for spec in ALL}
 
 
 def _catalogue(*names: str, layers=()) -> Catalogue:
     """A catalogue built from the committed schema JSON, the way the SDK embeds it."""
-    exts = [json.loads((SCHEMAS / f"{n}.json").read_text()) for n in names]
+    exts = [spec_from_schema_document(json.loads((SCHEMAS / BY_PREFIX[n].schema_path).read_text())) for n in names]
     return Catalogue.model_validate(
         {"version": "0.1.0", "protocol": "1.0.0", "extensions": exts, "layers": list(layers)}
     )
@@ -28,7 +30,7 @@ def _intent(**extra) -> GeoIntent:
 
 class TestCheckCatalogue:
     def test_committed_documents_pass(self):
-        check_catalogue(_catalogue("compare", "chart", "raster_styling"))
+        check_catalogue(_catalogue("compare", "chart", "raster-styling"))
 
     def test_an_empty_catalogue_passes(self):
         check_catalogue(Catalogue(version="0.1.0", protocol="1.0.0"))
@@ -49,13 +51,13 @@ class TestCheckCatalogue:
 
 class TestPrepareIntent:
     def test_declares_the_page_extensions_and_keeps_fields(self):
-        cat = _catalogue("compare", "raster_styling")
+        cat = _catalogue("compare", "raster-styling")
         out = prepare_intent(_intent(**{"compare:layers": [{"id": "B"}]}), cat)
         assert out.geoui_extensions == [compare.URI, raster_styling.URI]
         assert compare.extract(out).layers[0].id == "B"
 
     def test_unsupported_prefix_names_the_supported_ones(self):
-        cat = _catalogue("compare", "raster_styling")
+        cat = _catalogue("compare", "raster-styling")
         with pytest.raises(ValueError) as exc:
             prepare_intent(_intent(**{"chart:layer": "A"}), cat)
         assert str(exc.value) == (

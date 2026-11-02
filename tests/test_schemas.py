@@ -4,9 +4,11 @@ import importlib.util
 import json
 from pathlib import Path
 
+import jsonschema
 import pytest
 
 from geoui.extensions import ALL
+from geoui.extensions.spec import SCHEMAS_BASE_URL, spec_from_schema_document
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -33,11 +35,22 @@ def test_check_mode_is_clean():
     assert exporter.drifted() == []
 
 
-def test_extension_files_name_the_library_specs():
+@pytest.mark.parametrize("spec", ALL, ids=lambda s: s.prefix)
+def test_extension_document_is_the_library_spec_at_its_own_uri(spec):
+    doc = json.loads((exporter.SCHEMAS_DIR / spec.schema_path).read_text())
+    # The URI is the address of the file: base + the path under schemas/ (which Pages serves as the root).
+    assert doc["$id"] == spec.uri == f"{SCHEMAS_BASE_URL}/{spec.schema_path}"
+    assert spec.schema_path == f"ext/{spec.prefix}/v{spec.version}/schema.json"
+    assert doc["x-geoui"]["name"] == spec.prefix and doc["x-geoui"]["scope"] == spec.scope
+    assert spec_from_schema_document(doc) == spec.describe()
+    assert "$id" not in spec.describe()["fields_schema"]
+    jsonschema.Draft202012Validator.check_schema(doc)
+
+
+def test_index_lists_every_extension():
+    index = (exporter.SCHEMAS_DIR / "index.html").read_text()
     for spec in ALL:
-        doc = json.loads((exporter.SCHEMAS_DIR / "extensions" / f"{spec.prefix.replace('-', '_')}.json").read_text())
-        assert doc["name"] == spec.prefix and doc["uri"] == spec.uri and doc["scope"] == spec.scope
-        assert doc == spec.describe()
+        assert f'href="{spec.schema_path}"' in index and spec.uri in index
 
 
 def test_core_schema_is_geo_intent():

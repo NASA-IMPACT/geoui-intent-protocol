@@ -62,7 +62,7 @@ two reference agents, a marimo chat demo, and the head-to-head benchmark.
 | `benchmarks/worldview_legacy/results/poster-2026-05/` | Frozen `runs.jsonl` (51 rows) and `errors.jsonl` (22 rows) behind the poster. Absolute paths in tracebacks were replaced (`<worktree>` for the source checkout, `<python>` for the interpreter install). | — |
 | `scripts/dump_mcp_contract.py` | Dump any server's tool contract as JSON (`--module` picks the server, `--golden` the fixture). | fastmcp |
 | `geoui/extensions/spec.py` | `ExtensionSpec` (uri, prefix, scope, fields, summary; `describe()`), `used_prefixes`, `declare`: what a consumer needs to advertise and pre-declare extensions. | pydantic |
-| `schemas/`, `scripts/export_schemas.py`, `tests/test_schemas.py` | The protocol's JSON Schemas exported from pydantic (core + one `describe()` per extension), committed and drift-checked. The TypeScript SDK embeds them. | — |
+| `schemas/`, `scripts/export_schemas.py`, `tests/test_schemas.py` | The protocol's JSON Schemas exported from pydantic (core + one versioned `ext/<name>/v<version>/schema.json` per extension, `$id` = the URI), committed, drift-checked, and published by `.github/workflows/pages.yml` so each URI resolves. The TypeScript SDK embeds them. | — |
 | `sdk/geoui-react-adapter/` | **`@geoui/react-adapter`** (`README.md` is the three-step integration guide): `registry.ts` (slots, `compose`, `validate` with the same wording as `prepare_intent`, `apply` with replace semantics, `settle`), `bridge.ts` (`window.geoui`), `provider.tsx` (`GeoUIProvider`, `useGeoUIState`, `useGeoUIBridge`), `hooks.ts` (the attach hooks), `generated/` (types + schema literals from `scripts/gen-types.ts`). vitest + jsdom tests drive `window.geoui` from outside React. | react |
 | `demo/maplibre/maplibre_geo_application/` | React + MapLibre + GIBS app on the SDK: `App.tsx` owns the state and attaches it; `layers.ts` is the catalogue (`describe().layers`); `components/MapView.tsx` fits itself from a fit request (the primary map is uncontrolled). | @geoui/react-adapter, react-map-gl |
 | `demo/maplibre/` | **The MapLibre demo's Python side: the GeoUI MCP over CDP and its agent** (import `maplibre`, same `geoui-demos` member as `worldview`). `cdp.py` (`BridgeSession`: `connect_over_cdp`, page by origin, tab opened via the browser's `/json/new`), `catalogue.py` (`check_catalogue` against `geoui.extensions.ALL`, `prepare_intent`), `tools/` (docs, models, operations; `pai.py` toolset with `ModelRetry`), `mcp/server.py` (`create_server`, one lazy reconnecting session, `maplibre-mcp`), `agents/maplibre_agent.py` (bare agent, three tools, short prompt). Tests use `tests/_fake_session.py`; the contract golden is `tests/mcp/fixtures/bridge_contract.json`. | geoui, playwright, fastmcp, pydantic-ai |
@@ -105,10 +105,16 @@ prefixes + layered validation.
 
 **Extensions** are declared by URI in `geoui_extensions`; the matching
 `"<prefix>:<field>"` keys live as extra keys. **Declaring and using must
-agree**: a `compare:*` field without `https://geoui.org/ext/compare/v1.0.0`
+agree**: a `compare:*` field without
+`https://nasa-impact.github.io/geoui-intent-protocol/ext/compare/v1.0.0/schema.json`
 declared raises, and vice versa. This mismatch is the most common logged agent
-error (see the frozen `errors.jsonl`). URIs are identifiers, not fetched;
-`geoui.org` is not hosted.
+error (see the frozen `errors.jsonl`). URIs are compared as strings, never
+fetched, but each one resolves: `schemas/` is published as the site root by
+`.github/workflows/pages.yml`, and every URI is the address of its own
+`schema.json` (`$id` inside the file equals the URI). A published
+`ext/<name>/v<version>/` document never changes; bump the extension's
+`VERSION` for a change to its fields. (Benchmark results under
+`benchmarks/*/results/` predate this and record the old `geoui.org` strings.)
 
 ## 4. The adapter and the round trip
 

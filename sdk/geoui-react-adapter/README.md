@@ -77,7 +77,8 @@ passed to the extension hooks that are currently mounted, nothing else: attach `
 and `compare:*` fields become valid and appear in `describe().extensions` and in
 `geoui_extensions` of every `getState()`; leave `extensions.chart` unattached and a `chart:*`
 field is refused with `unsupported_extension`. The shipped specs (`compare`, `chart`,
-`rasterStyling`) are generated from [`schemas/extensions`](../../schemas/extensions), the same
+`rasterStyling`) are generated from [`schemas/ext`](../../schemas/ext), the published
+`schema.json` documents (each extension's URI is the address of its own file), the same
 documents the Python library describes.
 
 ### 3. Make the setters accept a whole value

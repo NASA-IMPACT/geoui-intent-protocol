@@ -50,7 +50,7 @@ the benchmark utility. On the TypeScript side, `@geoui/react-adapter`
 | Path | What it is | Depends on |
 |---|---|---|
 | `geoui/core.py`, `geoui/extensions/` | **The protocol.** `GeoIntent`, `Viewport`, `TimeWindow`, `LayerRef`; `compare`, `chart`, `raster-styling` extensions; `ExtensionSpec` (`describe()`, `declare`, `used_prefixes`) for consumers that advertise what they support | pydantic |
-| `schemas/`, `scripts/export_schemas.py` | The protocol's JSON Schemas (core + one `describe()` document per extension), exported from the pydantic models and drift-checked by `tests/test_schemas.py`; what non-Python consumers read | — |
+| `schemas/`, `scripts/export_schemas.py` | The protocol's JSON Schemas (core + one versioned `ext/<name>/v<version>/schema.json` per extension, whose `$id` is the extension URI), exported from the pydantic models, drift-checked by `tests/test_schemas.py`, and published as the root of `https://nasa-impact.github.io/geoui-intent-protocol/` by `.github/workflows/pages.yml`; what non-Python consumers read | — |
 | `demo/pyproject.toml` | The demos project (`geoui-demos`, packages `worldview` and `maplibre`), a uv workspace member installed editable by `uv sync` | geoui-protocol |
 | `demo/worldview/adapter/` | Reference adapter: `GeoIntent` ⇄ MIO Worldview permalink URL (`mapping.py`, `permalink.py`, `url_parser.py`) | geoui, dateutil |
 | `demo/worldview/tools/` | The two protocol operations as plain async functions plus request/response models; `pai.py` exposes them (and `worldview_permalink_tool`) as pydantic-ai toolsets | adapter; pydantic-ai for `pai.py` |
@@ -232,7 +232,7 @@ Research prototype. Open items, in rough priority order:
 - The benchmark's gold set is eight hand-curated scenarios and one synthetic set; push `n` and add scenarios beyond the compare/chart/styling extensions.
 - Accuracy evidence is one worked example; log a question-and-answer set.
 - No runnable conformance harness for new adapters (round-trip identity, read-only `get_state`, idempotent `render_intent`, declared extensions match the adapter, layer IDs validated).
-- No second adapter; the `geoui.org` extension URIs are placeholders.
+- No second adapter beyond the MapLibre demo.
 - Browser control sits outside the protocol today (Playwright navigates to the URL `render_intent` returns).
 
 ## License
