@@ -70,7 +70,6 @@ the benchmark utility. On the TypeScript side, `@geoui/react-adapter`
 | `benchmarks/maplibre/` | The MapLibre app directory for `geouibench`: `app.py` (the bridge's agent, state read from the page as a `geoui+json` handle), the gold set without chart, committed results | geouibench, demo |
 | `benchmarks/worldview_legacy/` | The earlier notebook-driven procedure: prompt suite, workflow scripts, frozen poster run logs | — |
 | `docs/spec.md` | GeoUI Protocol v1.0.0 specification | — |
-| `docs/poster/` | Poster narrative, abstract, interaction diagrams, results chart | — |
 | `docs/maplibre-demo/architecture.md` | Component, sequence and deployment diagrams of the agent → MCP → CDP → SDK → app path | — |
 | `scripts/dump_mcp_contract.py` | Print any MCP server's tool contract as JSON, for diffing | fastmcp |
 

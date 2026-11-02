@@ -22,9 +22,8 @@ __marimo__/
 node_modules/
 .DS_Store
 
-# images, except the poster figures
+# images
 *.png
-!docs/poster/figs/*.png
 
 # live benchmark logs (frozen results live under benchmarks/worldview_legacy/results/)
 benchmarks/worldview_legacy/runs.jsonl

@@ -3,7 +3,7 @@
 **Status:** research prototype (poster-track benchmark), consolidated into this
 standalone repo in October 2026 from an `akd-ext` worktree.
 **Read first:** this file top to bottom, then keep §7 (gotchas) and §6 (benchmark)
-open while you work. The poster-era narrative is in `docs/poster/HANDOVER.md`.
+open while you work.
 
 ---
 
