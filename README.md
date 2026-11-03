@@ -71,6 +71,7 @@ the benchmark utility. On the TypeScript side, `@geoui/react-adapter`
 | `benchmarks/worldview_legacy/` | The earlier notebook-driven procedure: prompt suite, workflow scripts, frozen poster run logs | — |
 | `docs/spec.md` | GeoUI Protocol v1.0.0 specification | — |
 | `docs/maplibre-demo/architecture.md` | Component, sequence and deployment diagrams of the agent → MCP → CDP → SDK → app path | — |
+| `docs/scripts.md` | Every runnable command (setup, checks, generators, demos, MCP servers, benchmarks, publishing) with what it does and which need keys | — |
 | `scripts/dump_mcp_contract.py` | Print any MCP server's tool contract as JSON, for diffing | fastmcp |
 
 Importing `geoui` pulls in nothing from `worldview`, `maplibre`,
