@@ -158,7 +158,7 @@ Established by a spike on 2026-10-28 (deepeval 4.3.2, pydantic-ai 2.63):
 - deepeval's `Observer` never clears `current_trace_context`, so `traced_turn` clears
   it around every turn; otherwise each later turn's trace would accumulate the earlier
   spans.
-- deepeval cannot build a multi-turn test case from traces locally (that is a Confident AI
+- deepeval cannot build a multi-turn test case from traces locally (that is a Confident SI
   feature), so the conversation comes from the simulator and the per-turn traces are
   stitched onto its `Turn`s.
 

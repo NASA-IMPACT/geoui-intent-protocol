@@ -1,6 +1,6 @@
 # GeoUI MIO Worldview demo
 
-The reference implementation of the GeoUI Intent Protocol, for NASA MIO Worldview. It keeps its
+The reference implementation of the GeoUI Intent Protocol, for MIO Worldview. It keeps its
 whole map state in the URL, so the adapter maps a `GeoIntent` to and from a MIO Worldview permalink, and
 MIO Worldview itself is never modified. This package (`worldview`, part of the `geoui-demos` workspace
 member) holds the adapter, the tools, the MCP server and the two agents that are compared in the

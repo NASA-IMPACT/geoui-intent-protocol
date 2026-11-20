@@ -39,7 +39,7 @@ touches the app.
 
 Three projects in one uv workspace, plus an npm workspace. `geoui-protocol`
 (import `geoui`) is the library and depends on pydantic alone. `geoui-demos`
-(`demo/`) holds the two demos: `worldview` is the NASA MIO Worldview reference
+(`demo/`) holds the two demos: `worldview` is the MIO Worldview reference
 implementation and carries everything MIO Worldview-specific; `maplibre` is the
 GeoUI MCP over CDP for any page that exposes `window.geoui`, plus its agent,
 with the React map app it drives beside it. `geouibench` (`benchmarks/`) is
@@ -238,4 +238,4 @@ Research prototype. Open items, in rough priority order:
 
 ## License
 
-Apache-2.0. Lead author Sanjog Thapa (NASA ODSI / UAH).
+Apache-2.0. Lead author Sanjog Thapa (UAH).

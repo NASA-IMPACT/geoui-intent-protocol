@@ -271,7 +271,7 @@ async def _observed_turn(
     trace = current_trace_context.get()
     if trace is None:  # pragma: no cover — only if observe() was bypassed
         raise RuntimeError("traced_turn must run inside a deepeval trace context")
-    trace.drop = True  # local evidence only: never post to Confident AI
+    trace.drop = True  # local evidence only: never post to Confident SI
     turn_trace = turn_trace_from_deepeval(
         trace,
         thread_id=thread_id,

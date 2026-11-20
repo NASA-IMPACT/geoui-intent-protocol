@@ -10,7 +10,7 @@ open while you work.
 ## 1. What this is
 
 The GeoUI Intent Protocol **decouples agent reasoning from app-specific
-rendering**. Instead of teaching an LLM the NASA MIO Worldview permalink grammar,
+rendering**. Instead of teaching an LLM the MIO Worldview permalink grammar,
 or letting it click around the UI, the agent emits a small, declarative,
 application-agnostic document, a `GeoIntent`, describing the *desired map
 state*. A pure adapter translates it to and from MIO Worldview's permalink URL.
